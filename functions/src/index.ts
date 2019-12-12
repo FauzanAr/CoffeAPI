@@ -3,6 +3,7 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import { userRecordConstructor } from 'firebase-functions/lib/providers/auth';
 
 admin.initializeApp(functions.config().firebase);
 
@@ -26,6 +27,7 @@ interface Post{
     id: String
 }
 
+//Post method
 app.post('/posts', async(req, res) => {
     try{
         const post: Post = {
@@ -40,3 +42,22 @@ app.post('/posts', async(req, res) => {
         res.status(400).send('Error there is unfilled variable');
     }
 });
+
+//Get all posts
+app.get('/posts', async(req,res)=>{
+    try{
+        const userQuerySnapshot = await db.collection(postsCollection).get();
+        const posts: any[] = [];
+
+        userQuerySnapshot.forEach((doc)=>{
+            posts.push({
+                id: doc.id,
+                data: doc.data()
+            });
+        });
+        res.status(200).json(posts);
+    } catch (error){
+        res.status(500).send(error);
+    }
+    )
+})
