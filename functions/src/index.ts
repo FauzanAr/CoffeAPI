@@ -35,6 +35,7 @@ app.post('/posts', async(req, res) => {
             id: req.body['id']
         }
         const newDoc = await db.collection(postsCollection).add(post);
+        res.status(200).send(`Create new ${newDoc.id}`);
     } catch(error){
         res.status(400).send('Error there is unfilled variable');
     }
