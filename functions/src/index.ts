@@ -3,7 +3,6 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import { userRecordConstructor } from 'firebase-functions/lib/providers/auth';
 
 admin.initializeApp(functions.config().firebase);
 
