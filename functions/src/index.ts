@@ -44,12 +44,12 @@ app.post('/posts', async(req, res) => {
 });
 
 //Get all posts
-app.get('/posts', async(req,res)=>{
+app.get('/posts', async(req,res) => {
     try{
         const userQuerySnapshot = await db.collection(postsCollection).get();
         const posts: any[] = [];
 
-        userQuerySnapshot.forEach((doc)=>{
+        userQuerySnapshot.forEach((doc) => {
             posts.push({
                 id: doc.id,
                 data: doc.data()
@@ -62,7 +62,7 @@ app.get('/posts', async(req,res)=>{
 })
 
 //Get single posts
-app.get('/posts/:postId',(req,res)=>{
+app.get('/posts/:postId',(req,res) => {
     const postId = req.params.postId;
     db.collection(postsCollection).doc(postId).get().then(post => {
         if(!post.exists) throw new Error('Post not found');
@@ -71,4 +71,16 @@ app.get('/posts/:postId',(req,res)=>{
             data: post.data()
         })
     }).catch(error => res.status(500).send(error));
+})
+
+//Delete post
+app.delete('/posts/:postId', (req, res) => {
+    db.collection(postsCollection).doc(req.params.postId).delete().then( () => res.status(204).send("Post successfully deleted!")).catch(function (error){
+        res.status(500).send(error);
+    })
+})
+
+//Update post
+app.put('/post/:postId', async (req, res) => {
+    await db.collection(postsCollection).doc(req.params.postId).set(req.body,{merge:true}).then(() => res.json({id:req.params.userId})).catch((error) => res.status(500).send(error));
 })
