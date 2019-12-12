@@ -57,6 +57,18 @@ app.get('/posts', async(req,res)=>{
         });
         res.status(200).json(posts);
     } catch (error){
-        res.status(500).send(error)
+        res.status(500).send(error);
     }
+})
+
+//Get single posts
+app.get('/posts/:postId',(req,res)=>{
+    const postId = req.params.postId;
+    db.collection(postsCollection).doc(postId).get().then(post => {
+        if(!post.exists) throw new Error('Post not found');
+        res.status(200).json({
+            id:post.id, 
+            data: post.data()
+        })
+    }).catch(error => res.status(500).send(error));
 })
