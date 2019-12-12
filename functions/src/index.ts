@@ -23,7 +23,6 @@ interface Post{
     title: String,
     content: String,
     author: String,
-    id: String
 }
 
 //Post method
@@ -33,7 +32,6 @@ app.post('/posts', async(req, res) => {
             title: req.body['title'],
             content: req.body['content'],
             author: req.body['author'],
-            id: req.body['id']
         }
         const newDoc = await db.collection(postsCollection).add(post);
         res.status(200).send(`Create new ${newDoc.id}`);
