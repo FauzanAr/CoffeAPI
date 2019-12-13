@@ -31,7 +31,7 @@ app.post('/posts', async(req, res) => {
         const post: Post = {
             title: req.body['title'],
             content: req.body['content'],
-            author: req.body['author'],
+            author: req.body['author']
         }
         const newDoc = await db.collection(postsCollection).add(post);
         res.status(200).send(`Create new ${newDoc.id}`);
